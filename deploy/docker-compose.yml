@@ -1,0 +1,56 @@
+services:
+  api: &main_app
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      target: prod
+    image: planet_diseases_backend:${PLANET_DISEASES_BACKEND_VERSION:-latest}
+    restart: always
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      PLANET_DISEASES_BACKEND_HOST: 0.0.0.0
+      PLANET_DISEASES_BACKEND_DB_HOST: planet_diseases_backend-db
+      PLANET_DISEASES_BACKEND_DB_PORT: 5432
+      PLANET_DISEASES_BACKEND_DB_USER: planet_diseases_backend
+      PLANET_DISEASES_BACKEND_DB_PASS: planet_diseases_backend
+      PLANET_DISEASES_BACKEND_DB_BASE: planet_diseases_backend
+
+  db:
+    image: postgres:16.3-bullseye
+    hostname: planet_diseases_backend-db
+    environment:
+      POSTGRES_PASSWORD: "planet_diseases_backend"
+      POSTGRES_USER: "planet_diseases_backend"
+      POSTGRES_DB: "planet_diseases_backend"
+    volumes:
+      - planet_diseases_backend-db-data:/var/lib/postgresql/data
+    restart: always
+    healthcheck:
+      test: pg_isready -U planet_diseases_backend
+      interval: 2s
+      timeout: 3s
+      retries: 40
+
+  migrator:
+    image: planet_diseases_backend:${PLANET_DISEASES_BACKEND_VERSION:-latest}
+    restart: "no"
+    command: alembic upgrade head
+    environment:
+      PLANET_DISEASES_BACKEND_DB_HOST: planet_diseases_backend-db
+      PLANET_DISEASES_BACKEND_DB_PORT: 5432
+      PLANET_DISEASES_BACKEND_DB_USER: planet_diseases_backend
+      PLANET_DISEASES_BACKEND_DB_PASS: planet_diseases_backend
+      PLANET_DISEASES_BACKEND_DB_BASE: planet_diseases_backend
+    depends_on:
+      db:
+        condition: service_healthy
+
+
+
+volumes:
+  planet_diseases_backend-db-data:
+    name: planet_diseases_backend-db-data

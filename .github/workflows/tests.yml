@@ -1,0 +1,56 @@
+name: Testing planet_diseases_backend
+
+on: push
+
+jobs:
+  lint:
+    strategy:
+      matrix:
+        cmd:
+          - black
+          - ruff
+          - mypy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install deps
+        run: poetry install
+      - name: Run lint check
+        run: poetry run pre-commit run -a ${{ matrix.cmd }}
+  pytest:
+    runs-on: ubuntu-latest
+    services:
+
+      planet_diseases_backend-db:
+        image: postgres:16.3-bullseye
+        env:
+          POSTGRES_PASSWORD: planet_diseases_backend
+          POSTGRES_USER: planet_diseases_backend
+          POSTGRES_DB: planet_diseases_backend
+        options: >-
+          --health-cmd="pg_isready"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+        ports:
+          - 5432:5432
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+      - name: Install deps
+        uses: knowsuchagency/poetry-install@v1
+        env:
+          POETRY_VIRTUALENVS_CREATE: false
+      - name: Run pytest check
+        run: poetry run pytest -vv --cov="planet_diseases_backend" .
+        env:
+          PLANET_DISEASES_BACKEND_HOST: "0.0.0.0"
+          PLANET_DISEASES_BACKEND_DB_HOST: localhost
+
