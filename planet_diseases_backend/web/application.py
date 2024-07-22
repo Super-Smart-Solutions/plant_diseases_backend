@@ -17,9 +17,7 @@ from planet_diseases_backend.web.lifetime import (
     register_shutdown_event,
     register_startup_event,
 )
-from sqladmin import Admin
-from sqlalchemy.ext.asyncio import create_async_engine
-from planet_diseases_backend.admin import UserAdmin, authentication_backend
+
 
 APP_ROOT = Path(__file__).parent.parent
 
@@ -69,13 +67,4 @@ def get_app() -> FastAPI:
     # This directory is used to access swagger files.
     app.mount("/static", StaticFiles(directory=APP_ROOT / "static"), name="static")
 
-    # Admin
-    admin = Admin(
-        app=app,
-        authentication_backend=authentication_backend,
-        engine=create_async_engine(str(settings.db_url), echo=settings.db_echo),
-        debug=True,
-        # templates_dir="app/admin/templates"
-    )
-    admin.add_view(UserAdmin)
     return app

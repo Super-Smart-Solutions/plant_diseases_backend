@@ -32,7 +32,6 @@ prometheus-client = "^0.20.0"
 prometheus-fastapi-instrumentator = "7.0.0"
 sentry-sdk = "^2.7.1"
 loguru = "^0"
-sqladmin = "^0.18.0"
 itsdangerous = "^2.2.0"
 
 
