@@ -19,7 +19,6 @@ from planet_diseases_backend.web.lifetime import (
     register_startup_event,
 )
 
-
 APP_ROOT = Path(__file__).parent.parent
 
 
@@ -67,7 +66,7 @@ def get_app() -> FastAPI:
         allow_origins=["*"],
         allow_methods=["*"],
         allow_headers=["*"],
-        expose_headers=["X-Total-Count"]
+        expose_headers=["X-Total-Count"],
     )
     # Main router for the API.
     app.include_router(router=api_router, prefix="/api")
