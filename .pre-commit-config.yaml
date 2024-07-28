@@ -27,3 +27,9 @@ repos:
             pass_filenames: false
             args:
               - "planet_diseases_backend"
+        
+          - id: generate-json-api-doc
+            name: Generate JSON API Documentation
+            entry: generate_json_api_doc.sh
+            language: script
+            always_run: true
