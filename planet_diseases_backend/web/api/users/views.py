@@ -4,12 +4,11 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from planet_diseases_backend.db.models.users import (
-    User,
-    UserCreate,  # type: ignore
-    UserRead,  # type: ignore
-    UserUpdate,  # type: ignore
-    api_users,  # type: ignore
-    auth_jwt,  # type: ignore
+    UserCreate,  
+    UserRead,  
+    UserUpdate,  
+    api_users,  
+    auth_jwt,  
 )
 
 router = APIRouter()

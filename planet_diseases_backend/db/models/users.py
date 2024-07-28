@@ -1,4 +1,5 @@
-# type: ignore
+# mypy: ignore-errors
+
 import uuid
 
 from fastapi import Depends
