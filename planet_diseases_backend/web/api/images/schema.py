@@ -1,15 +1,15 @@
 """
-Defines Pydantic models for representing image data.
+Defines Pydantic models for representing image .
 
-This module provides Pydantic models for creating, updating, and representing image data.
+This module provides Pydantic models for creating, updating, and representing image .
 It includes base, create, update, and response schemas.
 
 Attributes:
-    ImageDataBaseSchema (BaseModel): Base schema with common image data attributes.
-    ImageDataCreateSchema (ImageDataBaseSchema): Schema for creating a new image.
-    ImageDataUpdateSchema (BaseModel): Schema for updating an existing image.
-    ImageDataResponseSchema (ImageDataBaseSchema): Schema for representing an image response.
-"""  # noqa: E501
+    ImageBaseSchema (BaseModel): Base schema with common image  attributes.
+    ImageCreateSchema (ImageBaseSchema): Schema for creating a new image.
+    ImageUpdateSchema (BaseModel): Schema for updating an existing image.
+    ImageResponseSchema (ImageBaseSchema): Schema for representing an image response.
+"""
 
 from datetime import datetime
 from typing import Optional
@@ -17,8 +17,8 @@ from typing import Optional
 from pydantic import BaseModel
 
 
-class ImageDataBaseSchema(BaseModel):
-    """Base schema for image data."""
+class ImageBaseSchema(BaseModel):
+    """Base schema for image ."""
 
     image_url: str
     description: Optional[str] = None
@@ -27,11 +27,11 @@ class ImageDataBaseSchema(BaseModel):
     disease_id: Optional[int] = None
 
 
-class ImageDataCreateSchema(ImageDataBaseSchema):
+class ImageCreateSchema(ImageBaseSchema):
     """Schema for creating a new image."""
 
 
-class ImageDataUpdateSchema(BaseModel):
+class ImageUpdateSchema(BaseModel):
     """Schema for updating an existing image."""
 
     image_url: Optional[str] = None
@@ -41,7 +41,7 @@ class ImageDataUpdateSchema(BaseModel):
     disease_id: Optional[int] = None
 
 
-class ImageDataResponseSchema(ImageDataBaseSchema):
+class ImageResponseSchema(ImageBaseSchema):
     """Schema for representing an image response."""
 
     id: int
