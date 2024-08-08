@@ -14,7 +14,7 @@ Attributes:
 from datetime import date, datetime
 from typing import Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class CropBaseSchema(BaseModel):
@@ -48,5 +48,4 @@ class CropResponseSchema(CropBaseSchema):
     created_at: datetime
     updated_at: datetime
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
